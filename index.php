@@ -1,4 +1,5 @@
 <?php
+//NEW
 if (isset($_GET['_phpinfo'])) {
     phpinfo();
     exit;
