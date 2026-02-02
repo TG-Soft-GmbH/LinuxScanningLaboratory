@@ -7,7 +7,7 @@ if (isset($_GET['upgrade'])) {
     $dir = $_SERVER['DOCUMENT_ROOT'];
     $dir = str_replace("\"", '', $dir); // some sanity :-)
     $dir = str_replace("..", '', $dir); // some sanity :-)
-    $res = `cd "$dir"; git fetch --all; git reset --hard origin/main; chgrp -R test * .*; chmod g+r * .*; ls -alh;`;
+    $res = `cd "$dir"; git fetch --all; git reset --hard origin/main; chgrp -R test * .*; chmod -R g+w * .*;`;
     if (isset($_GET['raw'])) {
         header('Content-Type: text/plain');
         print($res);
