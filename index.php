@@ -4,14 +4,10 @@ if (isset($_GET['_phpinfo'])) {
     exit;
 }
 if (isset($_GET['upgrade'])) {
-    $dir = $_SERVER['DOCUMENT_ROOT'];
-    $dir = str_replace("\"", '', $dir); // some sanity :-)
-    $dir = str_replace("..", '', $dir); // some sanity :-)
-    $res = `cd "$dir"; git fetch --all; git reset --hard origin/main; chgrp -R test * .* 2>&1; chmod -R g+w * .*; 2>&1`;
+    $res = `sudo -u test /var/www/html/.upgrade.sh`;
     if (isset($_GET['raw'])) {
         header('Content-Type: text/plain');
         print($res);
-        print(`cd "$dir"; ls -alh; cat release.json;`);
     } else {
         header('Location: ' . '/?post_upgrade');
     }
