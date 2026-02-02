@@ -1,6 +1,6 @@
 {
     "name": "LinuxScanningLaboratory",
-    "version": "1.0.1",
+    "version": "0.0.9",
     "history": [
         { "1.0.1": "Work in progress" },
         { "1.0.0": "Initial Release" }
