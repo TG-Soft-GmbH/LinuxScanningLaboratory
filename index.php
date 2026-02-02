@@ -1,4 +1,17 @@
 <?php
+if (isset($_GET['_phpinfo'])) {
+    phpinfo();
+    exit;
+}
+if (isset($_GET['upgrade'])) {
+    $dir = $_SERVER['DOCUMENT_ROOT'];
+    $dir = str_replace("\"", '', $dir); // some sanity :-)
+    $dir = str_replace("..", '', $dir); // some sanity :-)
+    header('Content-Tyoe: text/plain');
+    print(`cd "$dir"; git fetch --all; git reset --hard origin/main; ls -alh;`);
+    //header('Location: ' . '/?post_upgrade');
+    exit;
+}
 if (isset($_GET['find_scanners'])) {
     $pre = [];
     $scanners = [];
@@ -98,12 +111,26 @@ if (isset($_GET['find_scanners'])) {
         p>span {
             color: darkgreen;
         }
+
+        .info {
+            background-color: lightskyblue;
+            border: 2px solid darkcyan;
+            padding: 22px;
+        }
     </style>
 </head>
 
 <body>
-    <span style="float:right;"><span id="version"></span><span id="upgrade"></span></span>
+    <span style="float:right;"><span class="version"></span><span class="upgrade"></span></span>
     <h2>TG-Soft / graphax LinuxScanningLaboratory</h2>
+    <?php if(isset($_GET['post_upgrade'])) { ?>
+        <p class="info">
+            Upgraded to <span class="version"></span>.
+        </p>
+        <script>
+            history.replaceState( {} , '', '/');
+        </script>
+    <?php } ?>
     <p>eSCL capable devices: <select name="scanner">
             <option value="_search" disabled selected>Searching, please wait...</option>
         </select>
@@ -114,11 +141,11 @@ if (isset($_GET['find_scanners'])) {
             $(function() {
                 $.getJSON('release.json', function(localdata) {
                     if (!localdata) return;
-                    $('#version').text('Version ' + localdata.version);
+                    $('.version').text('Version ' + localdata.version);
                     $.getJSON('https://raw.githubusercontent.com/TG-Soft-GmbH/LinuxScanningLaboratory/refs/heads/main/release.json', function(remotedata) {
                         if (!remotedata) return;
                         if(localdata.version != remotedata.version) {
-                            $('#upgrade').html(` - <a href="/upgrade" style="color:darkorange;">Upgrade to Version ${remotedata.version}</a>`);
+                            $('.upgrade').html(` - <a href="?upgrade" style="color:darkorange;">Upgrade to Version ${remotedata.version}</a>`);
                         }
                     });
                 });
