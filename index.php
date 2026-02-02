@@ -13,6 +13,9 @@ if (isset($_GET['upgrade'])) {
     }
     exit;
 }
+if(isset($_GET['post_upgrade'])) {
+    $_GET['msg'] = 'Upgraded to <span class="version"></span>.';
+}
 if (isset($_GET['find_scanners'])) {
     $pre = [];
     $scanners = [];
@@ -124,9 +127,10 @@ if (isset($_GET['find_scanners'])) {
 <body>
     <span style="float:right;"><span class="version"></span><span class="upgrade"></span></span>
     <h2>TG-Soft / graphax LinuxScanningLaboratory</h2>
-    <?php if(isset($_GET['post_upgrade'])) { ?>
+    <?php if(isset($_GET['msg'])) { ?>
         <p class="info">
-            Upgraded to <span class="version"></span>.
+            <span style="float:right;"><a href="#" onClick="$(this).parent().parent().remove()">Close Message</a></span>
+            <?= $_GET['msg'] ?>
         </p>
         <script>
             history.replaceState( {} , '', '/');
