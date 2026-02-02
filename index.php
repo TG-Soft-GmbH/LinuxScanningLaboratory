@@ -7,9 +7,9 @@ if (isset($_GET['upgrade'])) {
     $dir = $_SERVER['DOCUMENT_ROOT'];
     $dir = str_replace("\"", '', $dir); // some sanity :-)
     $dir = str_replace("..", '', $dir); // some sanity :-)
-    header('Content-Tyoe: text/plain');
-    print(`cd "$dir"; git fetch --all; git reset --hard origin/main; ls -alh;`);
-    //header('Location: ' . '/?post_upgrade');
+    //header('Content-Type: text/plain');
+    `cd "$dir"; git fetch --all; git reset --hard origin/main; ls -alh;`;
+    header('Location: ' . '/?post_upgrade');
     exit;
 }
 if (isset($_GET['find_scanners'])) {
