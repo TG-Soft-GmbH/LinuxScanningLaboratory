@@ -1,5 +1,4 @@
 <?php
-//NEW
 if (isset($_GET['_phpinfo'])) {
     phpinfo();
     exit;
@@ -8,9 +7,14 @@ if (isset($_GET['upgrade'])) {
     $dir = $_SERVER['DOCUMENT_ROOT'];
     $dir = str_replace("\"", '', $dir); // some sanity :-)
     $dir = str_replace("..", '', $dir); // some sanity :-)
-    //header('Content-Type: text/plain');
-    `cd "$dir"; git fetch --all; git reset --hard origin/main; ls -alh;`;
-    header('Location: ' . '/?post_upgrade');
+    $res = `cd "$dir"; git fetch --all; git reset --hard origin/main; chgrp -R test * .*; chmod g+r * .*; ls -alh;`;
+    if (isset($_GET['raw'])) {
+        header('Content-Type: text/plain');
+        print($res);
+        print(`cd "$dir"; ls -alh; cat release.json;`);
+    } else {
+        header('Location: ' . '/?post_upgrade');
+    }
     exit;
 }
 if (isset($_GET['find_scanners'])) {
