@@ -8,7 +8,11 @@ if (isset($_GET['_phpinfo'])) {
     exit;
 }
 if (isset($_GET['upgrade'])) {
-    $res = `sudo -u test /var/www/html/.upgrade.sh`;
+    $dir = __DIR__;
+    $upgradescript = "$dir/.upgrade.sh";
+    if(!file_exists($upgradescript)) exit;
+    $user = posix_getpwuid(fileowner($upgradescript))['name'];
+    $res = `sudo -u $user $upgradescript`;
     if (isset($_GET['raw'])) {
         header('Content-Type: text/plain');
         print($res);
