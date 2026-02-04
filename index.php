@@ -11,13 +11,14 @@ if (isset($_GET['upgrade'])) {
     $dir = __DIR__;
     $upgradescript = "$dir/.upgrade.sh";
     if(!file_exists($upgradescript)) exit;
-    $user = posix_getpwuid(fileowner($upgradescript))['name'];
+    $user = trim(shell_exec('stat -c %U ' . escapeshellarg($filename)));
     $res = `sudo -u $user $upgradescript`;
     if (isset($_GET['raw'])) {
         header('Content-Type: text/plain');
         print($res);
     } else {
-        header('Location: ' . '?post_upgrade');
+        $dir = dirname($_SERVER['SCRIPT_NAME']);
+        header("Location: $dir/?post_upgrade");
     }
     exit;
 }
