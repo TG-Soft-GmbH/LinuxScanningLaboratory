@@ -17,7 +17,7 @@ if (isset($_GET['upgrade'])) {
         header('Content-Type: text/plain');
         print($res);
     } else {
-        header('Location: ' . '/?post_upgrade');
+        header('Location: ' . '?post_upgrade');
     }
     exit;
 }
