@@ -39,7 +39,7 @@ if (isset($_GET['find_scanners'])) {
         //$pre[] = "LINE: $line\n";
         switch ($expect) {
             case 'device':
-                if (preg_match('/^= \w+ IPv\d ([\w \-\[\]]+?)\s+_uscan/', $line, $matches)) {
+                if (preg_match('/^= \w+ IPv4 ([\w \-\[\]]+?)\s+_uscan/', $line, $matches)) {
                     $name = $matches[1];
                     $pre[] = "NAME: $name\n";
                     $ip = '';
