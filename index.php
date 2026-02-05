@@ -3,10 +3,8 @@ header("Cache-Control: no-store, no-cache, must-revalidate, max-age=0");
 header("Cache-Control: post-check=0, pre-check=0", false);
 header("Pragma: no-cache");
 
-$self = dirname($_SERVER['REQUEST_URI']) . '/';
+$self = dirname($_SERVER['SCRIPT_NAME']) . '/';
 $ts = time();
-
-echo $self; exit;
 
 if (isset($_GET['_phpinfo'])) {
     phpinfo();
