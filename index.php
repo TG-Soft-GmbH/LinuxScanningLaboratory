@@ -143,7 +143,7 @@ if (isset($_GET['find_scanners'])) {
     <h2>TG-Soft / graphax LinuxScanningLaboratory</h2>
     <?php if(isset($_GET['msg'])) { ?>
         <p class="info">
-            <span style="float:right;"><a href="#" onClick="$(this).parent().parent().remove()">Close Message</a></span>
+            <span style="float:right;"><a href="#" onClick="$(this).parent().parent().remove(); return false;">Close Message</a></span>
             <?= $_GET['msg'] ?>
         </p>
         <script>
