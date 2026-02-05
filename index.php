@@ -3,6 +3,11 @@ header("Cache-Control: no-store, no-cache, must-revalidate, max-age=0");
 header("Cache-Control: post-check=0, pre-check=0", false);
 header("Pragma: no-cache");
 
+$self = dirname($_SERVER['REQUEST_URI']) . '/';
+$ts = time();
+
+echo $self; exit;
+
 if (isset($_GET['_phpinfo'])) {
     phpinfo();
     exit;
@@ -11,14 +16,13 @@ if (isset($_GET['upgrade'])) {
     $dir = __DIR__;
     $upgradescript = "$dir/.upgrade.sh";
     if(!file_exists($upgradescript)) exit;
-    $user = trim(shell_exec('stat -c %U ' . escapeshellarg($filename)));
+    $user = trim(shell_exec('stat -c %U ' . escapeshellarg($upgradescript)));
     $res = `sudo -u $user $upgradescript`;
     if (isset($_GET['raw'])) {
         header('Content-Type: text/plain');
         print($res);
     } else {
-        $dir = dirname($_SERVER['SCRIPT_NAME']);
-        header("Location: $dir/?post_upgrade");
+        header("Location: $self?post_upgrade");
     }
     exit;
 }
@@ -131,6 +135,9 @@ if (isset($_GET['find_scanners'])) {
             padding: 22px;
         }
     </style>
+    <script>
+        const ts = <?= $ts ?>;
+    </script>
 </head>
 
 <body>
@@ -153,10 +160,10 @@ if (isset($_GET['find_scanners'])) {
         <script>
             let activeScanner = '';
             $(function() {
-                $.getJSON('release.json', function(localdata) {
+                $.getJSON(`release.json?${ts}`, function(localdata) {
                     if (!localdata) return;
                     $('.version').text('Version ' + localdata.version);
-                    $.getJSON('https://raw.githubusercontent.com/TG-Soft-GmbH/LinuxScanningLaboratory/refs/heads/main/release.json', function(remotedata) {
+                    $.getJSON(`https://raw.githubusercontent.com/TG-Soft-GmbH/LinuxScanningLaboratory/refs/heads/main/release.json?${ts}`, function(remotedata) {
                         if (!remotedata) return;
                         if(localdata.version != remotedata.version) {
                             $('.upgrade').html(` - <a href="?upgrade" style="color:darkorange;">Upgrade to Version ${remotedata.version}</a>`);
