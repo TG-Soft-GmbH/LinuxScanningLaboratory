@@ -171,7 +171,7 @@ if (isset($_GET['find_scanners'])) {
         </select>
     </p>
     <p>Active scanner: <span id="activeScanner"></span></p>
-    <iframe id="execiframe" style="display:none;" src="?tst"></iframe>
+    <iframe id="execiframe" style="display:none;" src="?tst&<?= $ts ?>"></iframe>
     <pre id="execresult"></pre>
     <!-- <pre><?= print_r($scanners) ?></pre> -->
     <script>
