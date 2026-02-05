@@ -1,4 +1,8 @@
 <?php
+set_time_limit(600);
+ob_implicit_flush(true);
+ob_end_flush();
+
 header("Cache-Control: no-store, no-cache, must-revalidate, max-age=0");
 header("Cache-Control: post-check=0, pre-check=0", false);
 header("Pragma: no-cache");
@@ -6,14 +10,26 @@ header("Pragma: no-cache");
 $self = dirname($_SERVER['SCRIPT_NAME']) . '/';
 $ts = time();
 
+function execstream($cmd)
+{
+    echo '<!doctype html><html><body><pre>';
+    passthru('bash -c "echo; ' . $cmd . '" 2>&1; echo Execution finished. Exit code: $?');
+    echo '</pre><script>parent.postMessage("execstream_done", "*");</script></body></html>';
+}
+
 if (isset($_GET['_phpinfo'])) {
     phpinfo();
+    exit;
+}
+if (isset($_GET['tst'])) {
+    execstream('echo 0; sleep 1; echo 1; sleep 1; echo 2 >&2; sleep 1; echo 3; sleep 1; echo 4 >&2;');
+    flush();
     exit;
 }
 if (isset($_GET['upgrade'])) {
     $dir = __DIR__;
     $upgradescript = "$dir/.upgrade.sh";
-    if(!file_exists($upgradescript)) exit;
+    if (!file_exists($upgradescript)) exit;
     $user = trim(shell_exec('stat -c %U ' . escapeshellarg($upgradescript)));
     $res = `sudo -u $user $upgradescript`;
     if (isset($_GET['raw'])) {
@@ -24,7 +40,7 @@ if (isset($_GET['upgrade'])) {
     }
     exit;
 }
-if(isset($_GET['post_upgrade'])) {
+if (isset($_GET['post_upgrade'])) {
     $_GET['msg'] = 'Upgraded to <span class="version"></span>.';
 }
 if (isset($_GET['find_scanners'])) {
@@ -141,45 +157,58 @@ if (isset($_GET['find_scanners'])) {
 <body>
     <span style="float:right;"><span class="version"></span><span class="upgrade"></span></span>
     <h2>TG-Soft / graphax LinuxScanningLaboratory</h2>
-    <?php if(isset($_GET['msg'])) { ?>
+    <?php if (isset($_GET['msg'])) { ?>
         <p class="info">
             <span style="float:right;"><a href="#" onClick="$(this).parent().parent().remove(); return false;">Close Message</a></span>
             <?= $_GET['msg'] ?>
         </p>
         <script>
-            history.replaceState( {} , '', '<?= $self ?>');
+            history.replaceState({}, '', '<?= $self ?>');
         </script>
     <?php } ?>
     <p>eSCL capable devices: <select name="scanner">
             <option value="_search" disabled selected>Searching, please wait...</option>
         </select>
-    <p>Active scanner: <span id="activeScanner"></span>
-        <!-- <pre><?= print_r($scanners) ?></pre> -->
-        <script>
-            let activeScanner = '';
-            $(function() {
-                $.getJSON(`release.json?${ts}`, function(localdata) {
-                    if (!localdata) return;
-                    $('.version').text('Version ' + localdata.version);
-                    $.getJSON(`https://raw.githubusercontent.com/TG-Soft-GmbH/LinuxScanningLaboratory/refs/heads/main/release.json?${ts}`, function(remotedata) {
-                        if (!remotedata) return;
-                        if(localdata.version != remotedata.version) {
-                            $('.upgrade').html(` - <a href="?upgrade" style="color:darkorange;">Upgrade to Version ${remotedata.version}</a>`);
-                        }
-                    });
-                });
-                let $scannersel = $('select[name=scanner]');
-                $scannersel.on('change', function() {
-                    if ($scannersel.val() == '_search') {
-                        $scannersel.load('?find_scanners');
-                        $('#activeScanner').text('');
-                    } else {
-                        $('#activeScanner').text($scannersel.val());
+    </p>
+    <p>Active scanner: <span id="activeScanner"></span></p>
+    <iframe id="execiframe" style="display:none;" src="?tst"></iframe>
+    <pre id="execresult"></pre>
+    <!-- <pre><?= print_r($scanners) ?></pre> -->
+    <script>
+        let activeScanner = '';
+        $(function() {
+            let interval = null;
+            window.addEventListener("message", function(e) {
+                if (e.data === "execstream_done") {
+                    $("#execresult").text($("#execiframe").contents().find("pre").text());
+                    if(interval) clearInterval(interval);
+                }
+            });
+            interval = setInterval(function () {
+                $("#execresult").text($("#execiframe").contents().find("pre").text());
+            }, 250);
+            $.getJSON(`release.json?${ts}`, function(localdata) {
+                if (!localdata) return;
+                $('.version').text('Version ' + localdata.version);
+                $.getJSON(`https://raw.githubusercontent.com/TG-Soft-GmbH/LinuxScanningLaboratory/refs/heads/main/release.json?${ts}`, function(remotedata) {
+                    if (!remotedata) return;
+                    if (localdata.version != remotedata.version) {
+                        $('.upgrade').html(` - <a href="?upgrade" style="color:darkorange;">Upgrade to Version ${remotedata.version}</a>`);
                     }
                 });
-                $scannersel.load('?find_scanners');
             });
-        </script>
+            let $scannersel = $('select[name=scanner]');
+            $scannersel.on('change', function() {
+                if ($scannersel.val() == '_search') {
+                    $scannersel.load('?find_scanners');
+                    $('#activeScanner').text('');
+                } else {
+                    $('#activeScanner').text($scannersel.val());
+                }
+            });
+            $scannersel.load('?find_scanners');
+        });
+    </script>
 </body>
 
 </html>
