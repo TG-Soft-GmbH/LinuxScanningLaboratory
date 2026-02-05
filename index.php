@@ -147,7 +147,7 @@ if (isset($_GET['find_scanners'])) {
             <?= $_GET['msg'] ?>
         </p>
         <script>
-            history.replaceState( {} , '', '/');
+            history.replaceState( {} , '', '<?= $self ?>');
         </script>
     <?php } ?>
     <p>eSCL capable devices: <select name="scanner">
