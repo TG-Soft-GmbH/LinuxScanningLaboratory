@@ -1,0 +1,31 @@
+* {
+    margin: 0;
+    padding: 0;
+}
+
+body {
+    padding: 25px;
+    font-family: 'Roboto', sans-serif;
+    font-size: 1.2em;
+    font-style: normal;
+}
+
+input,
+select {
+    font-size: 1em;
+}
+
+h2,
+p {
+    margin-bottom: 18px;
+}
+
+p>span {
+    color: darkgreen;
+}
+
+.info {
+    background-color: lightskyblue;
+    border: 2px solid darkcyan;
+    padding: 22px;
+}
