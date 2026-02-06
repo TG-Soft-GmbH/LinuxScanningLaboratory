@@ -3,15 +3,22 @@
     padding: 0;
 }
 
-a, a:active, a:visited {
+a,
+a:active,
+a:visited {
     color: inherit;
 }
 
 body {
     padding: 25px;
+    padding-top: 9px;
     font-family: 'Roboto', sans-serif;
     font-size: 1.2em;
     font-style: normal;
+}
+
+[template] {
+    display: none;
 }
 
 input,
@@ -19,20 +26,52 @@ select {
     font-size: 1em;
 }
 
+table,
+tr,
+td {
+    font-size: inherit;
+}
+
+table {
+    margin: 8px 0;
+}
+
+td {
+    padding: 8px;
+    padding-left: 0;
+}
+
+button {
+    display: block;
+    height: 40px;
+    font-size: inherit;
+    padding: 8px 12px;
+    margin-right: 24px;
+    margin-top: 16px;
+}
+
 h2,
-p {
-    margin-bottom: 18px;
+p,
+iframe {
+    margin-top: 16px;
+}
+
+iframe {
+    display: inline-block;
+    height: 0;
+    width: calc(50% - 12px);
 }
 
 .upgrade {
     a {
-        color:darkorange;
+        color: darkorange;
     }
 }
 
 div {
     border: 2px solid darkslategrey;
-    padding: 12px;
+    padding: 16px;
+    padding-top: 0;
     margin: 16px 0;
     border-radius: 8px;
 }
@@ -43,8 +82,19 @@ div {
     padding: 22px;
 }
 
-p>span {
+p>span,
+td:nth-child(2) {
     color: darkgreen;
+}
+
+spinner {
+    display: inline-block;
+    vertical-align: middle;
+    transform: translateY(-2px);
+    width: 24px;
+    aspect-ratio: 1;
+    margin-left: 12px;
+    background-image: url('spinner.gif');
 }
 
 .upgradeoverlay {

@@ -11,12 +11,6 @@ if (isset($_GET['_phpinfo'])) {
     phpinfo();
     exit;
 }
-if (isset($_GET['tst'])) {
-    execstream('echo 0; sleep 1; echo 1; sleep 1; echo 2 >&2; sleep 1; echo 3; sleep 1; echo 4 >&2;');
-    flush();
-    exit;
-}
-
 ?>
 <html>
 
@@ -25,7 +19,7 @@ if (isset($_GET['tst'])) {
     <title>LinuxScanningLaboratory</title>
     <script src="jquery-4.0.0.min.js"></script>
     <script>
-        const ts = <?= $ts ?>;
+        let ts = Date.now();
     </script>
     <link href="index.css?<?= $ts ?>" rel="stylesheet">
 </head>
@@ -35,15 +29,36 @@ if (isset($_GET['tst'])) {
     <span style="float:right;"><span class="version"></span><span class="upgrade"></span></span>
     <h2>TG-Soft / graphax LinuxScanningLaboratory</h2>
     <?php require 'msg.php' ?>
-    <div>eSCL capable devices: <select name="scanner">
-            <option value="_search" disabled selected>Searching, please wait...</option>
-        </select>
+    <div>
+        <p>Local eSCL capable Devices: <select name="scanner">
+                <option value="_search" disabled selected>Searching, please wait...</option>
+            </select></p>
+        <p id="actionzone" style="display:none;">
+            Selected scanner: <span id="activeScanner"></span>
+            <button cmd="flat">Scan from Flatbed</button>
+            <button cmd="adf">Scan from ADF (Duplex)</button>
+            <button cmd="tst">Test</button>
+        </p>
     </div>
-    <div id="actionzone" style="display:none;">
-        <p>Selected scanner: <span id="activeScanner"></span></p>
+    <div template class="exhibit">
+        <span style="float:right; margin-top: 16px;"><a href="#" onClick="$(this).closest('div').slideUp(500, function() { $(this).remove(); }); return false;">Remove</a></span>
+        <table>
+            <tr>
+                <td>Exhibit</td>
+                <td class="eid"></td>
+            </tr>
+            <tr>
+                <td>Scanner</td>
+                <td class="scanner"></td>
+            </tr>
+            <tr>
+                <td>Command</td>
+                <td class="cmd"></td>
+            </tr>
+        </table>
+        <iframe style="float:right;" class="pdf" src=""></iframe>
+        <iframe class="terminal" src=""></iframe>
     </div>
-    <iframe id="execiframe" style="display:none;" src="?tst&<?= $ts ?>"></iframe>
-    <pre id="execresult"></pre>
     <script src="index.js?<?= $ts ?>"></script>
 </body>
 
