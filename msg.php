@@ -1,8 +1,8 @@
 <?php if (isset($_GET['msg'])) { ?>
-    <p class="info">
+    <div class="info">
         <span style="float:right;"><a href="#" onClick="$(this).parent().parent().remove(); return false;">Close Message</a></span>
         <?= $_GET['msg'] ?>
-    </p>
+    </div>
     <script>
         history.replaceState({}, '', '<?= $self ?>');
     </script>

@@ -3,6 +3,10 @@
     padding: 0;
 }
 
+a, a:active, a:visited {
+    color: inherit;
+}
+
 body {
     padding: 25px;
     font-family: 'Roboto', sans-serif;
@@ -20,16 +24,6 @@ p {
     margin-bottom: 18px;
 }
 
-p>span {
-    color: darkgreen;
-}
-
-.info {
-    background-color: lightskyblue;
-    border: 2px solid darkcyan;
-    padding: 22px;
-}
-
 .upgrade {
     a {
         color:darkorange;
@@ -41,6 +35,16 @@ div {
     padding: 12px;
     margin: 16px 0;
     border-radius: 8px;
+}
+
+.info {
+    background-color: lightskyblue;
+    border: 2px solid darkcyan;
+    padding: 22px;
+}
+
+p>span {
+    color: darkgreen;
 }
 
 .upgradeoverlay {
