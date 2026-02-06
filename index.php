@@ -31,13 +31,14 @@ if (isset($_GET['tst'])) {
 </head>
 
 <body>
+    <div class="upgradeverlay"></div>
     <span style="float:right;"><span class="version"></span><span class="upgrade"></span></span>
     <h2>TG-Soft / graphax LinuxScanningLaboratory</h2>
     <?php require 'msg.php' ?>
-    <p>eSCL capable devices: <select name="scanner">
+    <div>eSCL capable devices: <select name="scanner">
             <option value="_search" disabled selected>Searching, please wait...</option>
         </select>
-    </p>
+    </div>
     <div id="actionzone" style="display:none;">
         <p>Selected scanner: <span id="activeScanner"></span></p>
     </div>

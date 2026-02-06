@@ -7,7 +7,7 @@ $(function () {
         $.getJSON(`https://raw.githubusercontent.com/TG-Soft-GmbH/LinuxScanningLaboratory/refs/heads/main/release.json?${ts}`, function (remotedata) {
             if (!remotedata) return;
             if (localdata.version != remotedata.version) {
-                $('.upgrade').html(` - <a href="?upgrade" style="color:darkorange;">Upgrade to Version ${remotedata.version}</a>`);
+                $('.upgrade').html(` - <a href="?upgrade" onClick="$('.upgradeverlay').show();" style="color:darkorange;">Upgrade to Version ${remotedata.version}</a>`);
             }
         });
     });
