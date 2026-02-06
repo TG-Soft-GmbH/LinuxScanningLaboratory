@@ -3,13 +3,11 @@ $(function () {
     function manageVersion(localdata) {
         $('.version').text('Version ' + localdata.version);
         $.getJSON(`https://raw.githubusercontent.com/TG-Soft-GmbH/LinuxScanningLaboratory/refs/heads/main/release.json?${ts}`, function (remotedata) {
-            if (!remotedata) return;
             if (localdata.version != remotedata.version) {
                 $('.upgrade').html(` - <a href="?upgrade">Upgrade to Version ${remotedata.version}</a>`);
                 $('.upgrade').find('a').on('click', function () {
                     $('.upgradeoverlay').show();
                     setTimeout(() => location.reload(true), 45000);
-                    return true;
                 });
             }
         });
