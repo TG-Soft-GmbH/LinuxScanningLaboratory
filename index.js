@@ -1,5 +1,10 @@
 let activeScanner = '';
 $(function () {
+    function doUpgrade() {
+        $('.upgradeoverlay').show();
+        setTimeout(() => location.reload(true), 15000);
+        return true;
+    }
 
     $.getJSON(`release.json?${ts}`, function (localdata) {
         if (!localdata) return;
@@ -7,7 +12,7 @@ $(function () {
         $.getJSON(`https://raw.githubusercontent.com/TG-Soft-GmbH/LinuxScanningLaboratory/refs/heads/main/release.json?${ts}`, function (remotedata) {
             if (!remotedata) return;
             if (localdata.version != remotedata.version) {
-                $('.upgrade').html(` - <a href="?upgrade" onClick="$('.upgradeverlay').show();" style="color:darkorange;">Upgrade to Version ${remotedata.version}</a>`);
+                $('.upgrade').html(` - <a href="?upgrade" onClick="return doUpgrade();" style="color:darkorange;">Upgrade to Version ${remotedata.version}</a>`);
             }
         });
     });

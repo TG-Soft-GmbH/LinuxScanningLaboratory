@@ -31,7 +31,7 @@ if (isset($_GET['tst'])) {
 </head>
 
 <body>
-    <div class="upgradeverlay"></div>
+    <div class="upgradeoverlay"><span class="loader"></span></div>
     <span style="float:right;"><span class="version"></span><span class="upgrade"></span></span>
     <h2>TG-Soft / graphax LinuxScanningLaboratory</h2>
     <?php require 'msg.php' ?>
