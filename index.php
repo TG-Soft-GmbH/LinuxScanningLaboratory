@@ -27,7 +27,7 @@ if (isset($_GET['tst'])) {
     <script>
         const ts = <?= $ts ?>;
     </script>
-    <link href="dash.css?<?= $ts ?>" rel="stylesheet">
+    <link href="index.css?<?= $ts ?>" rel="stylesheet">
 </head>
 
 <body>
@@ -38,11 +38,12 @@ if (isset($_GET['tst'])) {
             <option value="_search" disabled selected>Searching, please wait...</option>
         </select>
     </p>
-    <p>Active scanner: <span id="activeScanner"></span></p>
+    <div id="actionzone" style="display:none;">
+        <p>Selected scanner: <span id="activeScanner"></span></p>
+    </div>
     <iframe id="execiframe" style="display:none;" src="?tst&<?= $ts ?>"></iframe>
     <pre id="execresult"></pre>
-    <!-- <pre><?= print_r($scanners) ?></pre> -->
-    <script src="index.js"></script>
+    <script src="index.js?<?= $ts ?>"></script>
 </body>
 
 </html>

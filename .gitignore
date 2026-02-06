@@ -1,2 +1,4 @@
 localconf.json
 localconf.php
+scandata/*
+!scandata/.gitkeep

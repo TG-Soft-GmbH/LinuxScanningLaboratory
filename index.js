@@ -1,17 +1,6 @@
 let activeScanner = '';
 $(function () {
 
-    let interval = null;
-    window.addEventListener("message", function (e) {
-        if (e.data === "execstream_done") {
-            $("#execresult").text($("#execiframe").contents().find("pre").text());
-            if (interval) clearInterval(interval);
-        }
-    });
-    interval = setInterval(function () {
-        $("#execresult").text($("#execiframe").contents().find("pre").text());
-    }, 250);
-    
     $.getJSON(`release.json?${ts}`, function (localdata) {
         if (!localdata) return;
         $('.version').text('Version ' + localdata.version);
@@ -22,13 +11,27 @@ $(function () {
             }
         });
     });
+    
+    let interval = null;
+    window.addEventListener("message", function (e) {
+        if (e.data === "execstream_done") {
+            if (interval) clearInterval(interval);
+            $("#execresult").text($("#execiframe").contents().find("pre").text());
+        }
+    });
+    interval = setInterval(function () {
+        $("#execresult").text($("#execiframe").contents().find("pre").text());
+    }, 250);
+    
     let $scannersel = $('select[name=scanner]');
     $scannersel.on('change', function () {
         if ($scannersel.val() == '_search') {
+            $('#actionzone').hide();
             $scannersel.load('?escl_discover');
             $('#activeScanner').text('');
         } else {
             $('#activeScanner').text($scannersel.val());
+            $('#actionzone').show();
         }
     });
     $scannersel.load('?escl_discover');
