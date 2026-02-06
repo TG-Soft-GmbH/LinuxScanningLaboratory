@@ -30,6 +30,12 @@ p>span {
     padding: 22px;
 }
 
+.upgrade {
+    a {
+        color:darkorange;
+    }
+}
+
 div {
     border: 2px solid darkslategrey;
     padding: 12px;
