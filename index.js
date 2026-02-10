@@ -71,5 +71,9 @@ $(function () {
                 }, 350);
             }
         });
+        loadPDF($exhibit.find('.pdf')[0], 'DoubleBorderSheet-A4-v1.0.pdf');
+        //loadPDF($exhibit.find('.pdf')[0], 'BorderSheet-A4-v1.0.pdf');
+        //loadPDF($exhibit.find('.pdf')[0], 'inktester.pdf');
+        //loadPDF($exhibit.find('.pdf')[0], 'pdfjs/web/compressed.tracemonkey-pldi-09.pdf');
     });
 });

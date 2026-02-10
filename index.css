@@ -62,12 +62,23 @@ iframe {
     width: calc(50% - 12px);
 }
 
-.pdf {
-    width: calc(50% - 42px);
-    height: 100px;
+.pdf-scroll {
+    width: calc(50% - 12px);
     float: right;
     border-radius: 0;
-    border: 1px solid darkred;
+    overflow-y: scroll;
+    scrollbar-gutter: stable;
+    border: 2px solid grey;
+    background: grey;
+    margin-top: 16px;
+
+    canvas {
+        padding: 12px 12px 1px 12px;
+    
+        &:last-child {
+            padding-bottom: 12px;
+        }
+    }
 }
 
 .upgrade {
@@ -76,7 +87,8 @@ iframe {
     }
 }
 
-div {
+.menu,
+.exhibit {
     border: 2px solid darkslategrey;
     padding: 16px;
     padding-top: 0;

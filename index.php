@@ -17,7 +17,6 @@ if (isset($_GET['_phpinfo'])) {
     <meta charset="UTF-8" />
     <title>LinuxScanningLaboratory</title>
     <script src="jquery-4.0.0.min.js"></script>
-    <script src="utils.js?<?= $ts ?>"></script>
     <script>
         let ts = Date.now();
     </script>
@@ -29,7 +28,7 @@ if (isset($_GET['_phpinfo'])) {
     <span style="float:right;"><span class="version"></span><span class="upgrade"></span></span>
     <h2>TG-Soft / graphax LinuxScanningLaboratory</h2>
     <?php require 'msg.php' ?>
-    <div>
+    <div class="menu">
         <p>Local eSCL capable Devices: <select name="scanner">
                 <option value="_search" disabled selected>Searching, please wait...</option>
             </select></p>
@@ -60,9 +59,12 @@ if (isset($_GET['_phpinfo'])) {
             <summary>Device Capabilities: XML Manifest<spinner /></summary>
             <pre>Loading, please be patient... <spinner /><</pre>
         </details>
-        <div class="pdf"></div>
+        <div class="pdf-scroll"><div class="pdf"></div></div>
         <iframe class="terminal" src=""></iframe>
     </div>
+    <script src="pdfjs/build/pdf.mjs" type="module"></script>
+    <script src="pdf.js?<?= $ts ?>"></script>
+    <script src="utils.js?<?= $ts ?>"></script>
     <script src="index.js?<?= $ts ?>"></script>
 </body>
 
