@@ -2,3 +2,5 @@ Options +Indexes
 
 RewriteEngine On
 RewriteRule "(^|/)\." - [F]
+
+php_value display_errors 1

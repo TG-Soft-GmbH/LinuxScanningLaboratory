@@ -62,6 +62,14 @@ iframe {
     width: calc(50% - 12px);
 }
 
+.pdf {
+    width: calc(50% - 42px);
+    height: 100px;
+    float: right;
+    border-radius: 0;
+    border: 1px solid darkred;
+}
+
 .upgrade {
     a {
         color: darkorange;
@@ -76,10 +84,33 @@ div {
     border-radius: 8px;
 }
 
+.terminal {
+    border: 1px solid darkslategrey;
+}
+
 .info {
     background-color: lightskyblue;
     border: 2px solid darkcyan;
     padding: 22px;
+}
+
+details {
+    border-radius: 8px;
+    border: 1px solid darkslategrey;
+    padding: 12px;
+
+    pre {
+        font-size: smaller;
+        white-space: pre-wrap;
+        word-break: break-word;
+        overflow-wrap: anywhere;
+    }
+}
+
+details[open]>summary {
+    border-bottom: 1px solid darkslategrey;
+    margin-bottom: 12px;
+    padding-bottom: 12px;
 }
 
 p>span,

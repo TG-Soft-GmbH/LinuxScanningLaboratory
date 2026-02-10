@@ -1,11 +1,10 @@
 <?php
-require 'base.php';
-
 require 'localconf.php';
-
+require 'base.php';
 require 'upgrade.php';
 require 'execstream.php';
 require 'escl_discover.php';
+require 'proxy.php';
 
 if (isset($_GET['_phpinfo'])) {
     phpinfo();
@@ -18,6 +17,7 @@ if (isset($_GET['_phpinfo'])) {
     <meta charset="UTF-8" />
     <title>LinuxScanningLaboratory</title>
     <script src="jquery-4.0.0.min.js"></script>
+    <script src="utils.js?<?= $ts ?>"></script>
     <script>
         let ts = Date.now();
     </script>
@@ -56,7 +56,11 @@ if (isset($_GET['_phpinfo'])) {
                 <td class="cmd"></td>
             </tr>
         </table>
-        <iframe style="float:right;" class="pdf" src=""></iframe>
+        <details>
+            <summary>Device Capabilities: XML Manifest<spinner /></summary>
+            <pre>Loading, please be patient... <spinner /><</pre>
+        </details>
+        <div class="pdf"></div>
         <iframe class="terminal" src=""></iframe>
     </div>
     <script src="index.js?<?= $ts ?>"></script>

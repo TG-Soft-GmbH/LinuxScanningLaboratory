@@ -40,18 +40,32 @@ $(function () {
         $exhibit.find('.cmd').html($(this).text() + '<spinner />');
         const $terminal = $exhibit.find('.terminal');
         const $pdf = $exhibit.find('.pdf');
-        $terminal.attr('src', `?cmd=${$(this).attr('cmd')}&out=${eid}/log.txt`);
-        $pdf.attr('src', `scandata/scan.pdf#view=Fit&zoom=page-fit&toolbar=0&navpanes=0&scrollbar=0`);
-        function resizeIframe() {
+        $terminal.attr('src', `?cmd=${$(this).attr('cmd')}&out=${eid}/log.txt&dev=${ encodeURIComponent($exhibit.find('.scanner').text()) }`);
+        $.ajax({
+            url: `?out=${eid}/capabilities.xml&url=` + $('#activeScanner').text().replaceAll('escl:', '') + '/ScannerCapabilities',
+            dataType: 'text',
+            success: function (data) {
+                $exhibit.find('details spinner').remove();
+                const xml = formatXml(data);
+                if (xml.includes('</parsererror>')) {
+                    $exhibit.find('summary').append(' INVALID.');
+                    if (!data) data = 'NO DATA.'
+                    $exhibit.find('pre').text(data);
+                } else {
+                    $exhibit.find('summary').append(' Ready.');
+                    $exhibit.find('pre').text(xml);
+                }
+            }
+        });
+        function resizeTerminal() {
             $terminal.stop().animate({ height: $terminal[0].contentWindow.document.body.scrollHeight }, 100);
-            $pdf.stop().animate({ height: 850 }, 100);
         }
-        const interval = setInterval(resizeIframe, 200);
+        const interval = setInterval(resizeTerminal, 50);
         window.addEventListener("message", function (e) {
             if (e.data === "execstream_done") {
                 setTimeout(function () {
                     clearInterval(interval);
-                    resizeIframe();
+                    resizeTerminal();
                     $('spinner').remove();
                     $('#actionzone button').prop('disabled', false);
                 }, 350);

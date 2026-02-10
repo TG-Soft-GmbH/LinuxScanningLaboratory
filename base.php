@@ -9,3 +9,37 @@ header("Pragma: no-cache");
 
 $self = dirname($_SERVER['SCRIPT_NAME']) . '/';
 $ts = time();
+
+$out = $_GET['out'] ?? '';
+if ($out) {
+    $out = $datastore . '/' . $instance . '-' . $out;
+    $dir = dirname($out);
+    if (!is_dir($dir)) {
+        mkdir($dir, 0777, true);
+        chmod($dir, 0777);
+    }
+}
+
+function copy_dir_777($src, $dst)
+{
+    if (!is_dir(dirname($dst))) throw new Exception('copy_dir: Target Directory "' . dirname($dst) .  '" is not writeable');
+    $dir = opendir($src);
+    if (is_dir($dst) || is_file($dst)) throw new Exception('copy_dir: Target Directory "' . dirname($dst) .  '" already exists');
+    @mkdir($dst);
+    while (false !== ($file = readdir($dir))) {
+        if (($file != '.') && ($file != '..')) {
+            if (is_dir($src . '/' . $file)) {
+                copy_dir_777($src . '/' . $file, $dst . '/' . $file);
+            } else {
+                copy($src . '/' . $file, $dst . '/' . $file);
+            }
+        }
+    }
+    closedir($dir);
+    $permissions = 0777;
+    chmod($dst, $permissions);
+    $iterator = new RecursiveDirectoryIterator($dst, RecursiveDirectoryIterator::SKIP_DOTS);
+    foreach ($iterator as $item) {
+        chmod($item, $permissions);
+    }
+}
