@@ -37,7 +37,7 @@ if (isset($_GET['escl_discover'])) {
                     $pre[] = "PORT: $port\n";
                     $pre[] = "PROTO: $proto\n";
                     $path = '';
-                    $expect = 'path';
+                    $expect = 'path';http://192.168.100.194:8081/eSCL
                 }
                 break;
             case 'path':

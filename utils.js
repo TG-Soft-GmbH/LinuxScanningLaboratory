@@ -1,8 +1,8 @@
 function formatXml(data) {
-    const parser = new DOMParser();
-    const xml = parser.parseFromString(data, 'application/xml');
+  const parser = new DOMParser();
+  const xml = parser.parseFromString(data, 'application/xml');
 
-    const xslt = `
+  const xslt = `
 <xsl:stylesheet version="1.0"
   xmlns:xsl="http://www.w3.org/1999/XSL/Transform">
   <xsl:output method="xml" indent="yes"/>
@@ -14,10 +14,20 @@ function formatXml(data) {
   </xsl:template>
 </xsl:stylesheet>`;
 
-    const xsltDoc = parser.parseFromString(xslt, 'application/xml');
-    const processor = new XSLTProcessor();
-    processor.importStylesheet(xsltDoc);
+  const xsltDoc = parser.parseFromString(xslt, 'application/xml');
+  const processor = new XSLTProcessor();
+  processor.importStylesheet(xsltDoc);
 
-    const resultDoc = processor.transformToDocument(xml);
-    return new XMLSerializer().serializeToString(resultDoc);
+  const resultDoc = processor.transformToDocument(xml);
+  return new XMLSerializer().serializeToString(resultDoc);
 }
+
+function triggerURL(url, onTrue, onFalse) {
+  $.ajax({
+    type: 'HEAD',
+    url: url,
+    success: onTrue,
+    error: onFalse
+  });
+}
+

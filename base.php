@@ -9,15 +9,20 @@ header("Pragma: no-cache");
 
 $self = dirname($_SERVER['SCRIPT_NAME']) . '/';
 $ts = time();
+$EOF_TAG = 'EOF';
+
+$path = $_GET['path'] ?? '';
+if ($path) {
+    $path = $datastore . '/' . $instance . '-' . $path;
+    if (!is_dir($path)) {
+        @mkdir($path, 0777, true);
+        chmod($path, 0777);
+    }
+}
 
 $out = $_GET['out'] ?? '';
 if ($out) {
-    $out = $datastore . '/' . $instance . '-' . $out;
-    $dir = dirname($out);
-    if (!is_dir($dir)) {
-        mkdir($dir, 0777, true);
-        chmod($dir, 0777);
-    }
+    $out = $path . '/' . $out;
 }
 
 function copy_dir_777($src, $dst)

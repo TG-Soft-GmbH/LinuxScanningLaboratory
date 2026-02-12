@@ -3,6 +3,7 @@ require 'localconf.php';
 require 'base.php';
 require 'upgrade.php';
 require 'execstream.php';
+require 'log.php';
 require 'escl_discover.php';
 require 'proxy.php';
 
@@ -18,7 +19,9 @@ if (isset($_GET['_phpinfo'])) {
     <title>LinuxScanningLaboratory</title>
     <script src="jquery-4.0.0.min.js"></script>
     <script>
-        let ts = Date.now();
+        const ts = Date.now();
+        const dataprefix = '<?= $datastore . '/' . $instance . '-' ?>';
+        const EOF_TAG = '<?= $EOF_TAG ?>';
     </script>
     <link href="index.css?<?= $ts ?>" rel="stylesheet">
 </head>
@@ -36,7 +39,7 @@ if (isset($_GET['_phpinfo'])) {
             Selected scanner: <span id="activeScanner"></span>
             <button cmd="flat">Scan from Flatbed</button>
             <button cmd="adf">Scan from ADF (Duplex)</button>
-            <button cmd="tst">Test</button>
+            <!-- <button cmd="tst">Test</button> -->
         </p>
     </div>
     <div template class="exhibit">
@@ -56,16 +59,22 @@ if (isset($_GET['_phpinfo'])) {
             </tr>
         </table>
         <details>
-            <summary>Device Capabilities: XML Manifest<spinner /></summary>
+            <summary>Device Capabilities: XML Manifest
+                <spinner />
+            </summary>
             <pre>Loading, please be patient... <spinner /><</pre>
         </details>
-        <div class="pdf-scroll"><div class="pdf"></div></div>
-        <iframe class="terminal" src=""></iframe>
-    </div>
-    <script src="pdfjs/build/pdf.mjs" type="module"></script>
-    <script src="pdf.js?<?= $ts ?>"></script>
-    <script src="utils.js?<?= $ts ?>"></script>
-    <script src="index.js?<?= $ts ?>"></script>
+        <div class="output">
+            <iframe class="terminal" src=""></iframe>
+            <div class="pdf-scroll">
+                <div class="pdf">Waiting for PDF...</div>
+            </div>
+            </table>
+        </div>
+        <script src="pdfjs/build/pdf.mjs" type="module"></script>
+        <script src="pdf.js?<?= $ts ?>"></script>
+        <script src="utils.js?<?= $ts ?>"></script>
+        <script src="index.js?<?= $ts ?>"></script>
 </body>
 
 </html>

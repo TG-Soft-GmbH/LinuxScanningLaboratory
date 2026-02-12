@@ -15,6 +15,7 @@ body {
     font-family: 'Roboto', sans-serif;
     font-size: 1.2em;
     font-style: normal;
+    overflow-y: scroll;
 }
 
 [template] {
@@ -56,27 +57,30 @@ iframe {
     margin-top: 16px;
 }
 
-iframe {
+.output {
+  display: flex;
+  gap: 20px;
+}
+
+.terminal {
     display: inline-block;
+    flex: 1;
     height: 0;
-    width: calc(50% - 12px);
 }
 
 .pdf-scroll {
-    width: calc(50% - 12px);
-    float: right;
+    flex: 1;
     border-radius: 0;
     overflow-y: scroll;
-    scrollbar-gutter: stable;
-    border: 2px solid grey;
     background: grey;
     margin-top: 16px;
 
-    canvas {
-        padding: 12px 12px 1px 12px;
-    
-        &:last-child {
-            padding-bottom: 12px;
+    div {
+        margin: 12px;
+        text-align: center;
+
+        canvas {
+            margin-bottom: 12px;
         }
     }
 }

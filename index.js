@@ -35,14 +35,14 @@ $(function () {
 
         let eid = new Date().toISOString().replaceAll('T', '_').replaceAll(':', '-').replaceAll('Z', '');
         let $exhibit = $('[template].exhibit').clone().removeAttr('template').insertAfter('[template].exhibit').hide().slideDown();
+        let activeScanner = $('#activeScanner').text();
         $exhibit.find('.eid').text(eid);
-        $exhibit.find('.scanner').text($('#activeScanner').text() + ' (' + $scannersel.find('option:selected').text() + ')');
+        $exhibit.find('.scanner').text(activeScanner + ' (' + $scannersel.find('option:selected').text() + ')');
         $exhibit.find('.cmd').html($(this).text() + '<spinner />');
         const $terminal = $exhibit.find('.terminal');
-        const $pdf = $exhibit.find('.pdf');
-        $terminal.attr('src', `?cmd=${$(this).attr('cmd')}&out=${eid}/log.txt&dev=${ encodeURIComponent($exhibit.find('.scanner').text()) }`);
+        $terminal.attr('src', `?cmd=${$(this).attr('cmd')}&dev=${activeScanner}&path=${eid}&out=log.txt&info=${$exhibit.find('.scanner').text()}`);
         $.ajax({
-            url: `?out=${eid}/capabilities.xml&url=` + $('#activeScanner').text().replaceAll('escl:', '') + '/ScannerCapabilities',
+            url: `?path=${eid}&out=capabilities.xml&url=` + activeScanner.replaceAll('escl:', '') + '/ScannerCapabilities',
             dataType: 'text',
             success: function (data) {
                 $exhibit.find('details spinner').remove();
@@ -61,19 +61,36 @@ $(function () {
             $terminal.stop().animate({ height: $terminal[0].contentWindow.document.body.scrollHeight }, 100);
         }
         const interval = setInterval(resizeTerminal, 50);
-        window.addEventListener("message", function (e) {
+        window.addEventListener("message", function messageHandler(e) {
             if (e.data === "execstream_done") {
+                window.removeEventListener("message", messageHandler);
+                clearInterval(interval);
                 setTimeout(function () {
-                    clearInterval(interval);
                     resizeTerminal();
-                    $('spinner').remove();
-                    $('#actionzone button').prop('disabled', false);
+                    function allDone() {
+                        $('spinner').remove();
+                        $('#actionzone button').prop('disabled', false);
+                        triggerURL(`?path=${eid}&log=` + encodeURIComponent(EOF_TAG));
+                    }
+                    const $pdf = $exhibit.find('.pdf');
+                    triggerURL(`${dataprefix}${eid}/scan.pdf`,
+                        function () {
+                            loadPDF($pdf[0], `${dataprefix}${eid}/scan.pdf`, allDone);
+                            triggerURL(`?path=${eid}&log=` + encodeURIComponent('PDF file present.'));
+                        },
+                        function () {
+                            $pdf.text('No PDF file generated.');
+                            triggerURL(`?path=${eid}&log=` + encodeURIComponent('No PDF file generated.'));
+                            allDone();
+                        }
+                    );
                 }, 350);
             }
         });
-        loadPDF($exhibit.find('.pdf')[0], 'DoubleBorderSheet-A4-v1.0.pdf');
-        //loadPDF($exhibit.find('.pdf')[0], 'BorderSheet-A4-v1.0.pdf');
-        //loadPDF($exhibit.find('.pdf')[0], 'inktester.pdf');
+        //loadPDF($exhibit.find('.pdf')[0], 'pdf-samples/DoubleBorderSheet-A4-v1.0.pdf');
+        //loadPDF($exhibit.find('.pdf')[0], 'pdf-samples/BorderSheet-A4-v1.0.pdf');
+        //loadPDF($exhibit.find('.pdf')[0], 'pdf-samples/inktester.pdf');
+        //loadPDF($exhibit.find('.pdf')[0], 'pdf-samples/emptytest.pdf');
         //loadPDF($exhibit.find('.pdf')[0], 'pdfjs/web/compressed.tracemonkey-pldi-09.pdf');
     });
 });
