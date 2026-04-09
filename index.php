@@ -20,7 +20,7 @@ if (isset($_GET['_phpinfo'])) {
     <script src="jquery-4.0.0.min.js"></script>
     <script>
         const ts = Date.now();
-        const dataprefix = '<?= $datastore . '/' . $instance . '-' ?>';
+        const dataprefix = '<?= $datastore . '/linuxscanlab-' . $instance . '-' ?>';
         const EOF_TAG = '<?= $EOF_TAG ?>';
     </script>
     <link href="index.css?<?= $ts ?>" rel="stylesheet">

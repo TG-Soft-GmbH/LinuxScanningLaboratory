@@ -13,7 +13,7 @@ $EOF_TAG = 'EOF';
 
 $path = $_GET['path'] ?? '';
 if ($path) {
-    $path = $datastore . '/' . $instance . '-' . $path;
+    $path = $datastore . '/linuxscanlab-' . $instance . '-' . $path;
     if (!is_dir($path)) {
         @mkdir($path, 0777, true);
         chmod($path, 0777);

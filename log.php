@@ -11,10 +11,9 @@ if ($log && $path) {
     }
     if ($finalize) {
         $eid = basename($path);
-        copy_dir_777($path, $datastore_copy . '/' . $eid);
+        @copy_dir_777($path, $datastore_copy . '/' . $eid);
         $srcdir = dirname($path);
-        `echo "$srcdir" > /var/www/html/linuxscanlab/scandata/tmp; echo "$eid" >> /var/www/html/linuxscanlab/scandata/tmp`;
-        //`cd "$srcdir" && zip -r "$eid.zip" "$eid"; xxrm -rf "$path"`;
+        `cd "$srcdir" && zip -r "$eid.zip" "$eid"; chmod a+rw "$eid.zip"; rm -rf "$eid"`;
     }
     exit;
 }
