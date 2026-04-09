@@ -108,6 +108,8 @@ iframe {
     background-color: lightskyblue;
     border: 2px solid darkcyan;
     padding: 22px;
+    margin: 25px 0;
+    border-radius: 12px;
 }
 
 details {
