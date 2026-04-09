@@ -55,6 +55,7 @@ function loadPDF(container, url, doneCallback) {
       const pdfwidth = (viewport.width * 25.4 / 72).toFixed(0);
       const pdfheight = (viewport.height * 25.4 / 72).toFixed(0);
       const format = detectISOAFormat(pdfwidth, pdfheight);
+
       let formatStr = format.match ? format.name : `(${format.name ? format.name : '>A0'})`;
       formatStr += ' ';
       if (format.orientation == 'P') {
@@ -65,9 +66,6 @@ function loadPDF(container, url, doneCallback) {
         formatStr += 'Square';
       }
 
-      function detectISOAFormat(widthMm, heightMm) {
-
-      }
       let annotation = `Page ${pageNum}/${pdf.numPages} - ${pdfwidth}mm x ${pdfheight}mm - ${formatStr}`;
       if (isEmpty) annotation += ' - BLANK';
       ctx.font = "bold 18px sans-serif";

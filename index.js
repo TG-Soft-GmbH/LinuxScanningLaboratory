@@ -33,7 +33,22 @@ $(function () {
         $('#actionzone button').prop('disabled', true);
         $(this).html($(this).html() + '<spinner />');
 
-        let eid = new Date().toISOString().replaceAll('T', '_').replaceAll(':', '-').replaceAll('Z', '');
+        function getLocalTimestamp() {
+            const d = new Date();
+
+            const pad = (n) => String(n).padStart(2, '0');
+
+            return (
+                d.getFullYear() + '-' +
+                pad(d.getMonth() + 1) + '-' +
+                pad(d.getDate()) + '_' +
+                pad(d.getHours()) + '-' +
+                pad(d.getMinutes()) + '-' +
+                pad(d.getSeconds())
+            );
+        }
+
+        let eid = getLocalTimestamp();
         let $exhibit = $('[template].exhibit').clone().removeAttr('template').insertAfter('[template].exhibit').hide().slideDown();
         let activeScanner = $('#activeScanner').text();
         $exhibit.find('.eid').text(eid);

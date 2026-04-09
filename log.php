@@ -10,8 +10,11 @@ if ($log && $path) {
         file_put_contents($path . '/log.txt', $log . PHP_EOL, FILE_APPEND | LOCK_EX);
     }
     if ($finalize) {
-        copy_dir_777($path, $datastore_copy . '/' . basename($path));
-        `zip -r $path.zip $path; rm -rf $path`;
+        $eid = basename($path);
+        copy_dir_777($path, $datastore_copy . '/' . $eid);
+        $srcdir = dirname($path);
+        `echo "$srcdir" > /var/www/html/linuxscanlab/scandata/tmp; echo "$eid" >> /var/www/html/linuxscanlab/scandata/tmp`;
+        //`cd "$srcdir" && zip -r "$eid.zip" "$eid"; xxrm -rf "$path"`;
     }
     exit;
 }
